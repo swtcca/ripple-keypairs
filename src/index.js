@@ -114,11 +114,18 @@ function deriveNodeAddress(publicKey) {
   return deriveAddressFromBytes(accountPublicBytes)
 }
 
+function checkAddress(address) {
+  return addressCodec.isValidAddress(address)
+}
+
 module.exports = {
   generateSeed,
   deriveKeypair,
+  deriveKeyPair: deriveKeypair,
   sign,
   verify,
   deriveAddress,
+  checkAddress,
+  ec: Secp256k1,
   deriveNodeAddress
 }

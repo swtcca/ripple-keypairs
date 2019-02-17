@@ -1,7 +1,7 @@
 {
   "name": "swtc-keypairs",
-  "version": "0.10.2",
-  "description": "jingtum key pairs",
+  "version": "0.10.5",
+  "description": "swtc keypairs",
   "files": [
     "distrib/npm/*",
     "bin/*",
