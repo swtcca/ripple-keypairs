@@ -1,7 +1,7 @@
 {
-  "name": "ripple-keypairs",
+  "name": "swtc-keypairs",
   "version": "0.10.2",
-  "description": "ripple key pairs",
+  "description": "jingtum key pairs",
   "files": [
     "distrib/npm/*",
     "bin/*",
@@ -18,7 +18,7 @@
     "brorand": "^1.0.5",
     "elliptic": "^6.4.0",
     "hash.js": "^1.0.3",
-    "ripple-address-codec": "^2.0.1"
+    "swtc-address-codec": "^2.0.2"
   },
   "devDependencies": {
     "assert-diff": "^1.0.1",
@@ -44,12 +44,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ripple/ripple-keypairs.git"
+    "url": "git://github.com/swtcca/ripple-keypairs.git"
   },
   "bugs": {
-    "url": "https://github.com/ripple/ripple-keypairs/issues"
+    "url": "https://github.com/swtcca/ripple-keypairs/issues"
   },
-  "homepage": "https://github.com/ripple/ripple-keypairs#readme",
+  "homepage": "https://github.com/swtcca/ripple-keypairs#readme",
   "license": "ISC",
   "readmeFilename": "README.md"
 }
