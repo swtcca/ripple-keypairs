@@ -1,5 +1,6 @@
 'use strict' // eslint-disable-line strict
 
+const Buffer = require('buffer').Buffer
 const assert = require('assert')
 const fixtures = require('./fixtures/api.json')
 const api = require('../src')
@@ -55,7 +56,7 @@ describe('api', () => {
   it('sign - secp256k1', () => {
     const privateKey = fixtures.secp256k1.keypair.privateKey
     const message = fixtures.secp256k1.message
-    const messageHex = (new Buffer(message, 'utf8')).toString('hex')
+    const messageHex = (new Buffer.from(message, 'utf8')).toString('hex')
     const signature = api.sign(messageHex, privateKey)
     assert.strictEqual(signature, fixtures.secp256k1.signature)
   })
@@ -64,14 +65,14 @@ describe('api', () => {
     const signature = fixtures.secp256k1.signature
     const publicKey = fixtures.secp256k1.keypair.publicKey
     const message = fixtures.secp256k1.message
-    const messageHex = (new Buffer(message, 'utf8')).toString('hex')
+    const messageHex = (new Buffer.from(message, 'utf8')).toString('hex')
     assert(api.verify(messageHex, signature, publicKey))
   })
 
 //  it('sign - ed25519', () => {
 //    const privateKey = fixtures.ed25519.keypair.privateKey
 //    const message = fixtures.ed25519.message
-//    const messageHex = (new Buffer(message, 'utf8')).toString('hex')
+//    const messageHex = (new Buffer.from(message, 'utf8')).toString('hex')
 //    const signature = api.sign(messageHex, privateKey)
 //    assert.strictEqual(signature, fixtures.ed25519.signature)
 //  })
@@ -80,7 +81,7 @@ describe('api', () => {
 //    const signature = fixtures.ed25519.signature
 //    const publicKey = fixtures.ed25519.keypair.publicKey
 //    const message = fixtures.ed25519.message
-//    const messageHex = (new Buffer(message, 'utf8')).toString('hex')
+//    const messageHex = (new Buffer.from(message, 'utf8')).toString('hex')
 //    assert(api.verify(messageHex, signature, publicKey))
 //  })
 
