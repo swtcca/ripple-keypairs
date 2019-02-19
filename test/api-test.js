@@ -4,7 +4,7 @@ const Buffer = require('buffer').Buffer
 const assert = require('assert')
 const fixtures = require('./fixtures/api.json')
 const api = require('../src')
-const decodeSeed = require('swtc-address-codec').decodeSeed
+const decodeSeed = require('bwt-address-codec').decodeSeed
 // const entropy = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
 describe('api', () => {
