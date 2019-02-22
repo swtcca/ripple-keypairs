@@ -127,7 +127,7 @@ module.exports = {
   // added for swtc
   deriveKeyPair: deriveKeypair,
   checkAddress,
-  ec: Secp256k1,
+  ec: secp256k1,
   addressCodec,
   // added for swtc
   deriveNodeAddress
