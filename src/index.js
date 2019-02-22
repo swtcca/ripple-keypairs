@@ -121,11 +121,14 @@ function checkAddress(address) {
 module.exports = {
   generateSeed,
   deriveKeypair,
-  deriveKeyPair: deriveKeypair,
   sign,
   verify,
   deriveAddress,
+  // added for swtc
+  deriveKeyPair: deriveKeypair,
   checkAddress,
   ec: Secp256k1,
+  addressCodec,
+  // added for swtc
   deriveNodeAddress
 }

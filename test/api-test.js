@@ -56,7 +56,7 @@ describe('api', () => {
   it('sign - secp256k1', () => {
     const privateKey = fixtures.secp256k1.keypair.privateKey
     const message = fixtures.secp256k1.message
-    const messageHex = (new Buffer.from(message, 'utf8')).toString('hex')
+    const messageHex = (Buffer.from(message, 'utf8')).toString('hex')
     const signature = api.sign(messageHex, privateKey)
     assert.strictEqual(signature, fixtures.secp256k1.signature)
   })
@@ -65,7 +65,7 @@ describe('api', () => {
     const signature = fixtures.secp256k1.signature
     const publicKey = fixtures.secp256k1.keypair.publicKey
     const message = fixtures.secp256k1.message
-    const messageHex = (new Buffer.from(message, 'utf8')).toString('hex')
+    const messageHex = (Buffer.from(message, 'utf8')).toString('hex')
     assert(api.verify(messageHex, signature, publicKey))
   })
 
