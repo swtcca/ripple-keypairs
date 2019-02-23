@@ -118,17 +118,27 @@ function checkAddress(address) {
   return addressCodec.isValidAddress(address)
 }
 
+function deriveKeyPairWithKey(privateKey) {
+  const publicKey = bytesToHex(
+    Secp256k1.keyFromPrivate(privateKey).getPublic().encodeCompressed()
+  )
+  return {privateKey: privateKey, publicKey: publicKey}
+}
+
 module.exports = {
   generateSeed,
   deriveKeypair,
   sign,
   verify,
   deriveAddress,
-  // added for swtc
+  // added for swtc-func
   deriveKeyPair: deriveKeypair,
+  deriveKeyPairWithKey,
   checkAddress,
   ec: secp256k1,
   addressCodec,
-  // added for swtc
+  convertAddressToBytes: addressCodec.decode,
+  convertBytesToAddress: addressCodec.encode,
+  // added for swtc-func
   deriveNodeAddress
 }
