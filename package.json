@@ -1,6 +1,6 @@
 {
   "name": "bwt-keypairs",
-  "version": "0.10.10",
+  "version": "0.11.0",
   "description": "bwt keypairs",
   "files": [
     "distrib/npm/*",
@@ -20,27 +20,15 @@
     "hash.js": "^1.0.3"
   },
   "devDependencies": {
-    "assert-diff": "^1.0.1",
-    "babel": "^5.8.20",
-    "babel-runtime": "^5.8.20",
-    "babel-core": "^5.8.20",
-    "babel-eslint": "^6.0.0",
-    "babel-loader": "^5.3.2",
-    "buffer": "^5.2.1",
-    "codecov.io": "^0.1.6",
-    "coveralls": "~2.11.4",
-    "eslint": "2.7.0",
-    "eventemitter2": "^0.4.14",
-    "istanbul": "~0.3.5",
-    "map-stream": "~0.1.0",
-    "mocha": "~2.3.3",
-    "nock": "^2.13.0"
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-transform-classes": "^7.3.4",
+    "eslint": "^5.14.1",
+    "mocha": "^6.0.2"
   },
   "scripts": {
-    "compile": "babel --optional runtime -d distrib/npm/ src/",
-    "compile-with-source-maps": "babel --optional runtime -s -t -d distrib/npm/ src/",
-    "test": "istanbul test _mocha",
-    "lint": "if ! [ -f eslintrc ]; then curl -o eslintrc 'https://raw.githubusercontent.com/ripple/javascript-style-guide/es6/eslintrc'; echo 'parser: babel-eslint' >> eslintrc; fi; eslint -c eslintrc src/*.js test/*.js"
+    "compile": "babel -d distrib/npm/ src/",
+    "test": "mocha test/test*js"
   },
   "repository": {
     "type": "git",
@@ -51,5 +39,11 @@
   },
   "homepage": "https://github.com/swtcca/ripple-keypairs#readme",
   "license": "ISC",
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "babel": {
+    "presets": [],
+    "plugins": [
+      "@babel/plugin-transform-classes"
+    ]
+  }
 }
