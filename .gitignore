@@ -63,3 +63,4 @@ scripts/cache
 eslintrc
 
 distrib/
+package-lock.json

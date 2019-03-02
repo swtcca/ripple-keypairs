@@ -1,6 +1,6 @@
 {
   "name": "swtc-keypairs",
-  "version": "0.10.9",
+  "version": "0.10.10",
   "description": "swtc keypairs",
   "files": [
     "distrib/npm/*",
@@ -13,7 +13,6 @@
     "test": "test"
   },
   "dependencies": {
-    "babel-runtime": "^5.8.20",
     "bn.js": "^3.1.1",
     "brorand": "^1.0.5",
     "elliptic": "^6.4.0",
@@ -26,6 +25,7 @@
     "babel-core": "^5.8.20",
     "babel-eslint": "^6.0.0",
     "babel-loader": "^5.3.2",
+    "babel-runtime": "^5.8.20",
     "buffer": "^5.2.1",
     "codecov.io": "^0.1.6",
     "coveralls": "~2.11.4",
