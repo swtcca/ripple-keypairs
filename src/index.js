@@ -40,6 +40,13 @@ const secp256k1 = {
   },
   verify: function(message, signature, publicKey) {
     return Secp256k1.verify(hash(message), signature, hexToBytes(publicKey))
+  },
+  signTx: function(message, privateKey) {
+    return bytesToHex(Secp256k1.sign(message,
+      hexToBytes(privateKey), {canonical: true}).toDER())
+  },
+  verifyTx: function(message, signature, publicKey) {
+    return Secp256k1.verify(message, signature, hexToBytes(publicKey))
   }
 }
 
