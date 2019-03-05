@@ -144,8 +144,8 @@ module.exports = {
   checkAddress,
   ec: secp256k1,
   addressCodec,
-  convertAddressToBytes: addressCodec.decode,
-  convertBytesToAddress: addressCodec.encode,
+  convertAddressToBytes: addressCodec.decodeAddress,
+  convertBytesToAddress: addressCodec.encodeAddress,
   // added for swtc-func
   deriveNodeAddress
 }
