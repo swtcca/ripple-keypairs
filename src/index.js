@@ -138,7 +138,7 @@ module.exports = {
   sign,
   verify,
   deriveAddress,
-  // added for swtc-func
+  // added for swtc-func for jingtum-base-lib
   deriveKeyPair: deriveKeypair,
   deriveKeyPairWithKey,
   checkAddress,
@@ -146,6 +146,6 @@ module.exports = {
   addressCodec,
   convertAddressToBytes: addressCodec.decodeAddress,
   convertBytesToAddress: addressCodec.encodeAddress,
-  // added for swtc-func
+  // added for swtc-func for jingtum-base-lib
   deriveNodeAddress
 }
