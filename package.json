@@ -25,22 +25,37 @@
     "@babel/core": "^7.3.4",
     "@babel/plugin-transform-classes": "^7.3.4",
     "eslint": "^5.14.1",
-    "mocha": "^6.0.2"
+    "husky": "^1.3.1",
+    "mocha": "^6.0.2",
+    "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
+    "pretty-quick": "^1.10.0"
   },
   "scripts": {
+    "prettier": "prettier",
+    "pretty-quick": "pretty-quick",
+    "prettier:check": "prettier -c --no-semi src/*.js",
+    "prettier:tabs": "prettier --no-semi --use-tabs --write package.json src/*.js",
+    "eslint": "eslint src/*.js",
     "compile": "babel -d distrib/npm/ src/",
     "compile-with-source-maps": "babel --optional runtime -s -t -d distrib/npm/ src/",
     "prepublish": "npm test",
-    "test": "mocha test/test*js"
+    "test": "mocha test/test*js",
+    "test:nyc": "nyc --reporter=html --reporter=text mocha test/test*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/swtcca/ripple-keypairs.git"
+    "url": "git://github.com/swtcca/swtc-keypairs.git"
   },
   "bugs": {
-    "url": "https://github.com/swtcca/ripple-keypairs/issues"
+    "url": "https://github.com/swtcca/swtc-keypairs/issues"
   },
-  "homepage": "https://github.com/swtcca/ripple-keypairs#readme",
+  "homepage": "https://github.com/swtcca/swtc-keypairs#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged --no-restage --verbose --bail"
+    }
+  },
   "license": "ISC",
   "readmeFilename": "README.md",
   "keywords": [

@@ -1,7 +1,7 @@
-'use strict' // eslint-disable-line strict
+"use strict" // eslint-disable-line strict
 
-const hashjs = require('hash.js')
-const BigNum = require('bn.js')
+const hashjs = require("hash.js")
+const BigNum = require("bn.js")
 
 module.exports = class Sha512 {
   constructor() {
@@ -12,8 +12,12 @@ module.exports = class Sha512 {
     return this
   }
   addU32(i) {
-    return this.add([(i >>> 24) & 0xFF, (i >>> 16) & 0xFF,
-                     (i >>> 8) & 0xFF, i & 0xFF])
+    return this.add([
+      (i >>> 24) & 0xff,
+      (i >>> 16) & 0xff,
+      (i >>> 8) & 0xff,
+      i & 0xff
+    ])
   }
   finish() {
     return this.hash.digest()
