@@ -64,3 +64,4 @@ eslintrc
 
 distrib/
 package-lock.json
+.nyc*
