@@ -46,7 +46,18 @@ const secp256k1 = {
   verify: function(message, signature, publicKey) {
     return Secp256k1.verify(hash(message), signature, hexToBytes(publicKey))
   },
+  signHash: function(message, privateKey) {
+    return bytesToHex(
+      Secp256k1.sign(hash(message), hexToBytes(privateKey), {
+        canonical: true
+      }).toDER()
+    )
+  },
+  verifyHash: function(message, signature, publicKey) {
+    return Secp256k1.verify(hash(message), signature, hexToBytes(publicKey))
+  },
   signTx: function(message, privateKey) {
+    // message is bytes
     return bytesToHex(
       Secp256k1.sign(message, hexToBytes(privateKey), {
         canonical: true
@@ -54,6 +65,7 @@ const secp256k1 = {
     )
   },
   verifyTx: function(message, signature, publicKey) {
+    // message is bytes
     return Secp256k1.verify(message, signature, hexToBytes(publicKey))
   }
 }
@@ -81,7 +93,38 @@ const ed25519 = {
       hexToBytes(signature),
       hexToBytes(publicKey).slice(1)
     )
+  },
+  signHash: function(message, privateKey) {
+    return bytesToHex(
+      Ed25519.sign(hash(message), hexToBytes(privateKey).slice(1)).toBytes()
+    )
+  },
+  verifyHash: function(message, signature, publicKey) {
+    return Ed25519.verify(
+      hash(message),
+      hexToBytes(signature),
+      hexToBytes(publicKey).slice(1)
+    )
+  },
+  // add for jingtum, same as sign and verify
+  signTx: function(message, privateKey) {
+    // caution: Ed25519.sign interprets all strings as hex, stripping
+    // any non-hex characters without warning
+    assert(Array.isArray(message), "message must be array of octets")
+    //message = bytesToHex(message)
+    return bytesToHex(
+      Ed25519.sign(message, hexToBytes(privateKey).slice(1)).toBytes()
+    )
+  },
+  verifyTx: function(message, signature, publicKey) {
+    //message = bytesToHex(message)
+    return Ed25519.verify(
+      message,
+      hexToBytes(signature),
+      hexToBytes(publicKey).slice(1)
+    )
   }
+  // add for jingtum, same as sign and verify
 }
 
 function select(algorithm) {
@@ -105,6 +148,27 @@ function verify(messageHex, signature, publicKey) {
   const algorithm = getAlgorithmFromKey(publicKey)
   return select(algorithm).verify(hexToBytes(messageHex), signature, publicKey)
 }
+
+// add for jingtum
+function signHash(message, privateKey) {
+  const algorithm = getAlgorithmFromKey(privateKey)
+  return select(algorithm).signHash(message, privateKey)
+}
+
+function verifyHash(message, signature, publicKey) {
+  const algorithm = getAlgorithmFromKey(publicKey)
+  return select(algorithm).verifyHash(message, signature, publicKey)
+}
+function signTx(messageBytes, privateKey) {
+  const algorithm = getAlgorithmFromKey(privateKey)
+  return select(algorithm).signTx(messageBytes, privateKey)
+}
+
+function verifyTx(messageBytes, signature, publicKey) {
+  const algorithm = getAlgorithmFromKey(publicKey)
+  return select(algorithm).verifyTx(messageBytes, signature, publicKey)
+}
+// add for jingtum
 
 function deriveKeyPairWithKey(privateKey) {
   const publicKey = bytesToHex(
@@ -168,9 +232,14 @@ function getKeyPair(chain_name = "jingtum") {
     verify,
     deriveAddress,
     // added for swtc-func for jingtum-base-lib
+    hash,
     deriveKeyPair: deriveKeypair,
     deriveKeyPairWithKey,
     checkAddress,
+    signHash,
+    verifyHash,
+    signTx,
+    verifyTx,
     ec: secp256k1,
     addressCodec,
     convertAddressToBytes: addressCodec.decodeAddress,
