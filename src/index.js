@@ -238,7 +238,7 @@ function getKeyPair(chain_name = "jingtum") {
     verify,
     deriveAddress,
     // added for swtc-func for jingtum-base-lib
-    // addressCodec,
+    //addressCodec,
     hash,
     signHash,
     verifyHash,
