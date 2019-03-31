@@ -9,6 +9,7 @@ const Secp256k1 = elliptic.ec("secp256k1")
 const derivePrivateKey = require("./secp256k1").derivePrivateKey
 const accountPublicFromPublicGenerator = require("./secp256k1")
   .accountPublicFromPublicGenerator
+const SWTC_CHAINS = require("swtc-chains")
 const utils = require("./utils")
 const hexToBytes = utils.hexToBytes
 const bytesToHex = utils.bytesToHex
@@ -226,22 +227,22 @@ function getKeyPair(chain_name = "jingtum") {
   }
 
   return {
+    chain: SWTC_CHAINS.filter( chain => chain.code.toLowerCase() === chain_name.toLowerCase() || chain.currency.toUpperCase() === chain_name.toUpperCase())[0].code,
     generateSeed,
     deriveKeypair,
     sign,
     verify,
     deriveAddress,
     // added for swtc-func for jingtum-base-lib
+    // addressCodec,
     hash,
-    deriveKeyPair: deriveKeypair,
-    deriveKeyPairWithKey,
-    checkAddress,
     signHash,
     verifyHash,
     signTx,
     verifyTx,
-    ec: secp256k1,
-    addressCodec,
+    deriveKeyPair: deriveKeypair,
+    deriveKeyPairWithKey,
+    checkAddress,
     convertAddressToBytes: addressCodec.decodeAddress,
     convertBytesToAddress: addressCodec.encodeAddress,
     __encode: addressCodec.encode,

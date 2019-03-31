@@ -1,6 +1,6 @@
 {
   "name": "swtc-keypairs",
-  "version": "0.11.11",
+  "version": "0.11.13",
   "description": "swtc keypairs",
   "files": [
     "distrib/npm/*",

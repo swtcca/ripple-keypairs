@@ -14,28 +14,18 @@ describe("constructor", function() {
   it("constructor with token or chain the same", function() {
     let by_chain = api()
     let by_token = api("swt")
-    assert.deepEqual(
-      Object.keys(by_chain.addressCodec.codecs),
-      Object.keys(by_token.addressCodec.codecs)
-    )
-    assert.deepEqual(by_chain.ec, by_token.ec)
+    assert.equal(by_chain.chain, by_token.chain)
   })
 
   it("constructor with different token", function() {
     let bwt_chain = api("bwt")
     let swt_chain = api("swt")
-    assert.notDeepEqual(
-      Object.keys(bwt_chain.addressCodec.codecs),
-      Object.keys(swt_chain.addressCodec.codecs)
-    )
+    assert.notEqual(bwt_chain.chain, swt_chain.chain)
   })
 
   it("constructor with different chain", function() {
     let bwt_chain = api("bizain")
     let swt_chain = api("jingtum")
-    assert.notDeepEqual(
-      Object.keys(bwt_chain.addressCodec.codecs),
-      Object.keys(swt_chain.addressCodec.codecs)
-    )
+    assert.notEqual(bwt_chain.chain, swt_chain.chain)
   })
 })
