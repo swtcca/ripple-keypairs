@@ -227,7 +227,11 @@ function getKeyPair(chain_name = "jingtum") {
   }
 
   return {
-    chain: SWTC_CHAINS.filter( chain => chain.code.toLowerCase() === chain_name.toLowerCase() || chain.currency.toUpperCase() === chain_name.toUpperCase())[0].code,
+    chain: SWTC_CHAINS.filter(
+      chain =>
+        chain.code.toLowerCase() === chain_name.toLowerCase() ||
+        chain.currency.toUpperCase() === chain_name.toUpperCase()
+    )[0].code,
     generateSeed,
     deriveKeypair,
     sign,
