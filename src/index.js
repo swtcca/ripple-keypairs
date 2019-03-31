@@ -6,20 +6,12 @@ const hashjs = require("hash.js")
 const elliptic = require("elliptic")
 const Ed25519 = elliptic.eddsa("ed25519")
 const Secp256k1 = elliptic.ec("secp256k1")
-const addressCodec = require("swtc-address-codec")
 const derivePrivateKey = require("./secp256k1").derivePrivateKey
 const accountPublicFromPublicGenerator = require("./secp256k1")
   .accountPublicFromPublicGenerator
 const utils = require("./utils")
 const hexToBytes = utils.hexToBytes
 const bytesToHex = utils.bytesToHex
-
-function generateSeed(options = {}) {
-  assert(!options.entropy || options.entropy.length >= 16, "entropy too short")
-  const entropy = options.entropy ? options.entropy.slice(0, 16) : brorand(16)
-  const type = options.algorithm === "ed25519" ? "ed25519" : "secp256k1"
-  return addressCodec.encodeSeed(entropy, type)
-}
 
 function hash(message) {
   return hashjs
@@ -97,19 +89,6 @@ function select(algorithm) {
   return methods[algorithm]
 }
 
-function deriveKeypair(seed, options) {
-  const decoded = addressCodec.decodeSeed(seed)
-  const algorithm = decoded.type === "ed25519" ? "ed25519" : "ecdsa-secp256k1"
-  const method = select(algorithm)
-  const keypair = method.deriveKeypair(decoded.bytes, options)
-  const messageToVerify = hash("This test message should verify.")
-  const signature = method.sign(messageToVerify, keypair.privateKey)
-  if (method.verify(messageToVerify, signature, keypair.publicKey) !== true) {
-    throw new Error("derived keypair did not generate verifiable signature")
-  }
-  return keypair
-}
-
 function getAlgorithmFromKey(key) {
   const bytes = hexToBytes(key)
   return bytes.length === 33 && bytes[0] === 0xed
@@ -127,26 +106,6 @@ function verify(messageHex, signature, publicKey) {
   return select(algorithm).verify(hexToBytes(messageHex), signature, publicKey)
 }
 
-function deriveAddressFromBytes(publicKeyBytes) {
-  return addressCodec.encodeAccountID(
-    utils.computePublicKeyHash(publicKeyBytes)
-  )
-}
-
-function deriveAddress(publicKey) {
-  return deriveAddressFromBytes(hexToBytes(publicKey))
-}
-
-function deriveNodeAddress(publicKey) {
-  const generatorBytes = addressCodec.decodeNodePublic(publicKey)
-  const accountPublicBytes = accountPublicFromPublicGenerator(generatorBytes)
-  return deriveAddressFromBytes(accountPublicBytes)
-}
-
-function checkAddress(address) {
-  return addressCodec.isValidAddress(address)
-}
-
 function deriveKeyPairWithKey(privateKey) {
   const publicKey = bytesToHex(
     Secp256k1.keyFromPrivate(privateKey)
@@ -156,22 +115,71 @@ function deriveKeyPairWithKey(privateKey) {
   return { privateKey: privateKey, publicKey: publicKey }
 }
 
-module.exports = {
-  generateSeed,
-  deriveKeypair,
-  sign,
-  verify,
-  deriveAddress,
-  // added for swtc-func for jingtum-base-lib
-  deriveKeyPair: deriveKeypair,
-  deriveKeyPairWithKey,
-  checkAddress,
-  ec: secp256k1,
-  addressCodec,
-  convertAddressToBytes: addressCodec.decodeAddress,
-  convertBytesToAddress: addressCodec.encodeAddress,
-  __encode: addressCodec.encode,
-  __decode: addressCodec.decode,
-  // added for swtc-func for jingtum-base-lib
-  deriveNodeAddress
+function getKeyPair(chain_name = "jingtum") {
+  let addressCodec = require("swtc-address-codec")(chain_name)
+
+  function generateSeed(options = {}) {
+    assert(
+      !options.entropy || options.entropy.length >= 16,
+      "entropy too short"
+    )
+    const entropy = options.entropy ? options.entropy.slice(0, 16) : brorand(16)
+    const type = options.algorithm === "ed25519" ? "ed25519" : "secp256k1"
+    return addressCodec.encodeSeed(entropy, type)
+  }
+
+  function deriveKeypair(seed, options) {
+    const decoded = addressCodec.decodeSeed(seed)
+    const algorithm = decoded.type === "ed25519" ? "ed25519" : "ecdsa-secp256k1"
+    const method = select(algorithm)
+    const keypair = method.deriveKeypair(decoded.bytes, options)
+    const messageToVerify = hash("This test message should verify.")
+    const signature = method.sign(messageToVerify, keypair.privateKey)
+    if (method.verify(messageToVerify, signature, keypair.publicKey) !== true) {
+      throw new Error("derived keypair did not generate verifiable signature")
+    }
+    return keypair
+  }
+
+  function deriveAddressFromBytes(publicKeyBytes) {
+    return addressCodec.encodeAccountID(
+      utils.computePublicKeyHash(publicKeyBytes)
+    )
+  }
+
+  function deriveAddress(publicKey) {
+    return deriveAddressFromBytes(hexToBytes(publicKey))
+  }
+
+  function deriveNodeAddress(publicKey) {
+    const generatorBytes = addressCodec.decodeNodePublic(publicKey)
+    const accountPublicBytes = accountPublicFromPublicGenerator(generatorBytes)
+    return deriveAddressFromBytes(accountPublicBytes)
+  }
+
+  function checkAddress(address) {
+    return addressCodec.isValidAddress(address)
+  }
+
+  return {
+    generateSeed,
+    deriveKeypair,
+    sign,
+    verify,
+    deriveAddress,
+    // added for swtc-func for jingtum-base-lib
+    deriveKeyPair: deriveKeypair,
+    deriveKeyPairWithKey,
+    checkAddress,
+    ec: secp256k1,
+    addressCodec,
+    convertAddressToBytes: addressCodec.decodeAddress,
+    convertBytesToAddress: addressCodec.encodeAddress,
+    __encode: addressCodec.encode,
+    __decode: addressCodec.decode,
+    // added for swtc-func for jingtum-base-lib
+    deriveNodeAddress
+  }
 }
+
+module.exports = getKeyPair
